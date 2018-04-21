@@ -12,6 +12,16 @@ function configureScene() {
     cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
+    var loader = new THREE.OBJLoader2();
+    loader.loadMtl('graphics/House.mtl', null, function(materials) {
+        loader.setModelName = 'House';
+        loader.setMaterials(materials);
+        loader.setLogging(true, true);
+        loader.load('graphics/House.obj', function(event) {
+            scene.add(event.detail.loaderRootNode);
+        }, null, null, null, false);
+    });
+
     camera.position.z = 5;
 }
 
