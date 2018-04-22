@@ -3,6 +3,7 @@ var keys = {
     right: 39,
     up: 38,
     down: 40,
+    w: 87,
     a: 65,
     s: 83,
     d: 68,
@@ -16,7 +17,7 @@ var keys = {
     x: 88,
 };
 
-var keyState, triggerKeyState;
+var keyState, triggerKeyState, mouseState;
 
 // This is for the title screen initial key press tracking.
 var initialKeyPress;
@@ -24,6 +25,7 @@ var initialKeyPress;
 function configureInput() {
     keyState = {};
     triggerKeyState = {};
+    mouseState = { movement: {} };
     _.keys(keys).forEach(function(key) {
         keyState[key] = false; 
         triggerKeyState[key] = false; 
@@ -62,8 +64,18 @@ var keyReleased = function(e) {
     }
 };
 
+var mouseMoved = function(e) {
+    mouseState.movement = {
+        x: e.clientX - mouseState.x,
+        y: e.clientY - mouseState.y,
+    };
+    mouseState.x = e.clientX;
+    mouseState.y = e.clientY;
+};
+
 function updateInput() {
     _.keys(keys).forEach(function(key) {
         triggerKeyState[key] = false; 
     });
+    mouseState.movement = { x: 0, y: 0 };
 }

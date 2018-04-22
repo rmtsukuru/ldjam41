@@ -1,7 +1,7 @@
 var scene, camera, cube;
 
 const PLAYER_SPEED = 2;
-const PLAYER_TURN_SPEED = 0.05;
+const PLAYER_TURN_SPEED = 0.01;
 
 function configureScene() {
     scene = new THREE.Scene();
@@ -36,26 +36,28 @@ function updateScene() {
     cube.rotation.x += 0.05;
     cube.rotation.y += 0.05;
 
-    if (keyState.up) {
+    if (keyState.up || keyState.w) {
         camera.position.z -= Math.cos(camera.rotation.y) * PLAYER_SPEED;
         camera.position.x -= Math.sin(camera.rotation.y) * PLAYER_SPEED;
     }
-    if (keyState.down) {
+    if (keyState.down || keyState.s) {
         camera.position.z += Math.cos(camera.rotation.y) * PLAYER_SPEED;
         camera.position.x += Math.sin(camera.rotation.y) * PLAYER_SPEED;
     }
-    if (keyState.left) {
+    if (keyState.left || keyState.a) {
         camera.position.x -= Math.cos(-1 * camera.rotation.y) * PLAYER_SPEED;
         camera.position.z -= Math.sin(-1 * camera.rotation.y) * PLAYER_SPEED;
     }
-    if (keyState.right) {
+    if (keyState.right || keyState.d) {
         camera.position.x += Math.cos(-1 * camera.rotation.y) * PLAYER_SPEED;
         camera.position.z += Math.sin(-1 * camera.rotation.y) * PLAYER_SPEED;
     }
-    if (keyState.a) {
-        camera.rotation.y += PLAYER_TURN_SPEED;
+    if (Math.abs(mouseState.movement.x) > 0.001) {
+        camera.rotation.y = camera.rotation.y || 0;
+        camera.rotation.y -= PLAYER_TURN_SPEED * mouseState.movement.x;
     }
-    if (keyState.d) {
-        camera.rotation.y -= PLAYER_TURN_SPEED;
-    }
+}
+
+function drawHud() {
+    document.getElementById('notification').innerHTML = '';
 }
