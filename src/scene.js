@@ -1,6 +1,6 @@
 var scene, camera, cube;
 
-const PLAYER_SPEED = 0.1;
+const PLAYER_SPEED = 2;
 const PLAYER_TURN_SPEED = 0.05;
 
 function configureScene() {
@@ -12,17 +12,24 @@ function configureScene() {
     cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
 
-    var loader = new THREE.OBJLoader2();
-    loader.loadMtl('graphics/House.mtl', null, function(materials) {
-        loader.setModelName = 'House';
-        loader.setMaterials(materials);
-        loader.setLogging(true, true);
-        loader.load('graphics/House.obj', function(event) {
-            scene.add(event.detail.loaderRootNode);
-        }, null, null, null, false);
-    });
+    var ambientLight = new THREE.AmbientLight(0x404040);
+    var directionalLight1 = new THREE.DirectionalLight(0xC0C090);
+    var directionalLight2 = new THREE.DirectionalLight(0xC0C090);
+    directionalLight1.position.set(-100, -50, 100);
+    directionalLight2.position.set(100, 50, -100);
+    this.scene.add(directionalLight1);
+    this.scene.add(directionalLight2);
+    this.scene.add(ambientLight);
 
-    camera.position.z = 5;
+    loadModel('House', '', { x: -50, y: 5 });
+    loadModel('Player', '', { x: 80, z: 250 });
+
+    var helper = new THREE.GridHelper(1200, 60, 0xFF4444, 0x404040);
+    this.scene.add(helper);
+
+    camera.position.z = 500;
+    camera.position.y = 100;
+    cube.position.x = 2;
 }
 
 function updateScene() {
